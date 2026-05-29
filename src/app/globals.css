@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark mode by default */
+  --bg-base: #0D0E10;
+  --bg-surface: #141619;
+  --bg-surface-elevated: #1D2024;
+  --text-primary: #F3F4F6;
+  --text-secondary: #8E939E;
+  --text-tertiary: #4A505A;
+  --accent-sage: #8FA89B;
+  --accent-beige: #E6DFD3;
+  --grid-line-color: rgba(143, 168, 155, 0.02);
+  --text-stroke-color: rgba(243, 244, 246, 0.15);
+  --scrollbar-thumb: #272A30;
+  
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+:root.light {
+  /* Premium Light mode (Warm Japanese Editorial Gallery) */
+  --bg-base: #F7F6F3; /* Warm architectural paper white */
+  --bg-surface: #EEEEEE; /* Soft gray-beige */
+  --bg-surface-elevated: #E5E4E0; /* Elevated paper grey */
+  --text-primary: #121316; /* Clean charcoal black */
+  --text-secondary: #5C626E; /* Muted gray for readable body */
+  --text-tertiary: #9EA5B4; /* Accent gray */
+  --accent-sage: #4E665A; /* Deep slate sage */
+  --accent-beige: #6E685E; /* Deep warm beige */
+  --grid-line-color: rgba(78, 102, 90, 0.04);
+  --text-stroke-color: rgba(18, 19, 22, 0.12);
+  --scrollbar-thumb: #D3D2CE;
+}
+
+@theme {
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-elevated: var(--bg-surface-elevated);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent-sage: var(--accent-sage);
+  --color-accent-beige: var(--accent-beige);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Hide default cursor on desktop when custom cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, input, select, textarea, [role="button"], .cursor-pointer {
+    cursor: none !important;
   }
 }
 
-body {
-  background: var(--background);
+/* Base resets & typography */
+html {
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/noise.93fe26ae.gif');
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Technical Blueprint Grid Background */
+.blueprint-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: -1;
+  transition: background-image 0.3s ease;
+}
+
+/* Scroll smooth behaviors for Lenis */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Utilities */
+.mask-text-reveal {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px var(--text-stroke-color);
+  color: transparent;
+  transition: -webkit-text-stroke 0.3s ease;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
