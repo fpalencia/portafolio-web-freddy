@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -69,6 +70,20 @@ export default function RootLayout({
       className={`${geistSans.variable} ${jetbrainsMono.variable} scrollbar-hide`}
     >
       <body className="bg-bg-base text-text-primary antialiased selection:bg-accent-sage/30 selection:text-text-primary">
+        {/* Google Analytics (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-7J3DFS1TER"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-7J3DFS1TER');
+          `}
+        </Script>
+
         {/* Structured Data (JSON-LD) para SEO Avanzado */}
         <script
           type="application/ld+json"
