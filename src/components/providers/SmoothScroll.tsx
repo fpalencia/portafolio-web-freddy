@@ -40,8 +40,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       event.preventDefault();
       event.stopPropagation();
       if (lenis.limit > 0) {
-        const menu = document.querySelector<HTMLElement>(".mu-top");
-        lenis.scrollTo(target as HTMLElement, { offset: -(menu?.offsetHeight ?? 0) });
+        // Lenis honours the sections' scroll-margin-top, which clears the sticky menu.
+        lenis.scrollTo(target as HTMLElement);
       } else {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
