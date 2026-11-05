@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 /**
- * Difference-blend dot for fine pointers only. Toggles `mu-cursor-on` on the
- * page wrapper so the native cursor is hidden only while the dot is active.
+ * Coral dot for fine pointers only; it opens into a ring over links so their
+ * text stays readable. Toggles `mu-cursor-on` on the page wrapper so the native
+ * cursor is hidden only while the dot is active.
  */
 export function CustomCursor() {
   const dotRef = useRef<HTMLSpanElement>(null);
@@ -28,7 +29,7 @@ export function CustomCursor() {
     };
     const onOver = (event: PointerEvent) => {
       const active = (event.target as Element | null)?.closest?.("a, button");
-      gsap.to(dot, { scale: active ? 3.5 : 1, duration: 0.25, overwrite: "auto" });
+      dot.classList.toggle("mu-cursor-ring", Boolean(active));
     };
     const onLeave = () => page.classList.remove("mu-cursor-on");
 
