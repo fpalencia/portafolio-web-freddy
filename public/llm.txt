@@ -1,51 +1,33 @@
 # Freddy Daniel Palencia Padrón
-> Frontend Architect, Product Engineer & Founder
+> Full Stack Developer
 > Based in Santiago de Chile
 > Website: https://freddypalencia.cl
 > Contact: freddypalencia125@gmail.com
 > LinkedIn: https://www.linkedin.com/in/freddy-daniel-palencia-padr%C3%B3n-6ab690111/
 
-## Professional Profile
-Expert Frontend Architect and Product Engineer with 15+ years of software design experience. Focused on developing highly scalable web applications, optimizing critical system performance (Web Vitals), and mobile platform innovation. Dedicated to premium user experience, motion engineering, and clean architecture.
+## Own Project
 
-## Primary Technologies
-- **Frontend Architecture**: React.js, Next.js (App Router), TypeScript, Vue.js, Nuxt.js
-- **Mobile Development**: React Native, Expo, Kotlin, Android Automation
-- **Styles & Animations**: Tailwind CSS v4, GSAP (ScrollTrigger), CSS3, SASS
-- **State Management & Tools**: Zustand, Pinia, NextAuth.js, Electron.js, TanStack Table
-- **Performance & Databases**: Core Web Vitals optimization, PostgreSQL, MongoDB, Elasticsearch
-
-## Startups & SaaS Products
-
-### DecideRider (2026 — Present)
-* **Role**: CEO & Founder & Lead Architect
-* **Description**: A mobile mobility ecosystem powered by autonomous AI agents and speech overlays on top of transit apps for drivers.
-* **Stack**: React Native, Expo, Kotlin, Android Automation, Zustand, Google Maps API, AI Speech API
-
-### Kuuwu (SaaS Product)
-* **Role**: Founder & Frontend Lead
-* **Description**: A multi-tenant SaaS platform built to digitalize construction budgets, workflows, and task tracking for construction teams.
-* **Stack**: Next.js (App Router), TypeScript, Zustand, TanStack Query
+### DecideRider
+A mobile app, published on Google Play and the App Store, that helps ride-hailing and delivery drivers decide whether a trip is worth taking.
+* Recommends based on fare, distance and fuel cost.
+* Reads trip data with on-device text recognition.
+* Processes the information in real time.
+* Google Play: https://play.google.com/store/apps/details?id=com.deciderider.app
+* App Store: https://apps.apple.com/cl/app/deciderider/id6786428143
 
 ## Employment History
 
-- **Flexit** (2025 — Present) | *Frontend Web Developer*
-  Developed multi-tenant HR management systems, reporting dynamic dashboards, and complex authentication flows.
-  *Stack*: Next.js, React, TypeScript, MUI, Tailwind, TanStack Table, NextAuth.js
+- **Flexit** (2025 — 2026) | *Full Stack Developer*
+  Built the attendance control software of an HR platform, compliant with Chilean Dirección del Trabajo rules, with NestJS APIs, role-based access and digital signature in the mobile app.
+  *Stack*: Next.js, NestJS, React Native, Google Cloud
 
-- **ZeroQ** (2025) | *Frontend Web Developer*
-  Developed high-concurrency custom customer service and hybrid desktop integrations.
-  *Stack*: React.js, Zustand, Electron.js, Tailwind CSS, TypeScript
+- **ZeroQ** (2025) | *Frontend Developer*
+  Built the frontend of self-service and self-checkout kiosks, integrating native device capabilities, and responsive web interfaces.
+  *Stack*: React, Electron, Next.js, Zustand
 
-- **Medios Regionales** (2019 — 2024) | *Frontend Web Developer & Architect*
-  Lead engineer for leading news portals (Soychile.cl, Mercurio Valparaíso/Antofagasta), achieving 100% Core Web Vitals pass and +40% PageSpeed.
-  *Stack*: Next.js, Nuxt.js, Vue.js, Zustand, Pinia, Elasticsearch
+- **Medios Regionales** (2019 — 2024) | *Frontend Developer*
+  Built the El Mercurio de Valparaíso site with SSR and dynamic metadata, maintained and evolved the SoyChile.cl portal, and optimized Core Web Vitals and technical SEO.
+  *Stack*: Next.js, Nuxt.js, Vue 3, Elasticsearch
 
-- **B y C Comunicaciones** (2018 — 2019) | *Frontend Web Developer*
-  *Stack*: WordPress, PHP, JavaScript, REST APIs
-
-- **Redon Publicidad** (2018) | *Frontend Web Developer*
-  *Stack*: HTML5, CSS3, SASS, JavaScript, SEO
-
-- **Digevo Group** (2016 — 2018) | *Junior Frontend Developer*
-  *Stack*: JavaScript, HTML5, CSS3, Telecom APIs
+- **Earlier, agencies and telecom** (2016 — 2019)
+  Websites, mailings and SEO for brands such as Kunstmann and Absolut, and web products for mobile operators in Latin America.

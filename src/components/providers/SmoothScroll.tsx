@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,40 +8,52 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
-
   useEffect(() => {
-    // 1. Inicializar Lenis con física inercial premium
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing físico suave
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    lenisRef.current = lenis;
+    const onScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onScroll);
 
-    // 2. Vincular el scroll de Lenis a GSAP ScrollTrigger
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-    });
-
-    // 3. Agregar el ticker de GSAP a Lenis
-    const updateTicker = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(updateTicker);
-
-    // 4. Optimizar el lagging
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    // 5. Cleanup al desmontar
+    // Capture phase so Lenis, not the browser, performs in-page jumps.
+    const onAnchor = (event: MouseEvent) => {
+      // Leave open-in-new-tab and similar gestures to the browser.
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
+      const hash = link?.getAttribute("href");
+      if (!hash || hash.length < 2) return;
+      let target: Element | null = null;
+      try {
+        target = document.querySelector(hash);
+      } catch {
+        return;
+      }
+      if (!target) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (lenis.limit > 0) {
+        const menu = document.querySelector<HTMLElement>(".mu-top");
+        lenis.scrollTo(target as HTMLElement, { offset: -(menu?.offsetHeight ?? 0) });
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+    document.addEventListener("click", onAnchor, true);
+
     return () => {
+      document.removeEventListener("click", onAnchor, true);
+      gsap.ticker.remove(tick);
+      gsap.ticker.lagSmoothing(500, 33);
+      lenis.off("scroll", onScroll);
       lenis.destroy();
-      gsap.ticker.remove(updateTicker);
     };
   }, []);
 

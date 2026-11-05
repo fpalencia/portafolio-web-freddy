@@ -1,108 +1,50 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
+/**
+ * Difference-blend dot for fine pointers only. Toggles `mu-cursor-on` on the
+ * page wrapper so the native cursor is hidden only while the dot is active.
+ */
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const dot = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
+    const page = dot?.closest<HTMLElement>(".mu-page");
+    if (!dot || !page) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let ringX = 0;
-    let ringY = 0;
-    let isHovering = false;
-    let isMouseDown = false;
+    gsap.set(dot, { xPercent: -50, yPercent: -50 });
+    const moveX = gsap.quickTo(dot, "x", { duration: 0.25, ease: "power3" });
+    const moveY = gsap.quickTo(dot, "y", { duration: 0.25, ease: "power3" });
 
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+    const onMove = (event: PointerEvent) => {
+      page.classList.add("mu-cursor-on");
+      moveX(event.clientX);
+      moveY(event.clientY);
     };
-
-    const onMouseDown = () => {
-      isMouseDown = true;
+    const onOver = (event: PointerEvent) => {
+      const active = (event.target as Element | null)?.closest?.("a, button");
+      gsap.to(dot, { scale: active ? 3.5 : 1, duration: 0.25, overwrite: "auto" });
     };
+    const onLeave = () => page.classList.remove("mu-cursor-on");
 
-    const onMouseUp = () => {
-      isMouseDown = false;
-    };
-
-    const onMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-      
-      const isClickable = 
-        target.tagName === "BUTTON" ||
-        target.tagName === "A" ||
-        target.closest("button") ||
-        target.closest("a") ||
-        target.classList.contains("cursor-pointer") ||
-        window.getComputedStyle(target).cursor === "pointer";
-
-      isHovering = !!isClickable;
-    };
-
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("mouseover", onMouseOver);
-
-    let animationFrameId: number;
-    const render = () => {
-      // Posición del punto interno (instantánea)
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-
-      // Posición del anillo externo (Lerp inercial del 15%)
-      const lerpFactor = 0.15;
-      ringX += (mouseX - ringX) * lerpFactor;
-      ringY += (mouseY - ringY) * lerpFactor;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-
-      // Modificadores de estado (hover o clic)
-      if (isMouseDown) {
-        ring.style.transform += " scale(0.65)";
-        ring.style.borderColor = "var(--accent-sage)";
-        ring.style.backgroundColor = "rgba(143, 168, 155, 0.1)";
-      } else if (isHovering) {
-        ring.style.transform += " scale(1.5)";
-        ring.style.borderColor = "var(--accent-sage)";
-        ring.style.backgroundColor = "rgba(143, 168, 155, 0.05)";
-      } else {
-        ring.style.transform += " scale(1)";
-        ring.style.borderColor = "var(--text-tertiary)";
-        ring.style.backgroundColor = "transparent";
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerover", onOver);
+    document.documentElement.addEventListener("mouseleave", onLeave);
 
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mouseup", onMouseUp);
-      window.removeEventListener("mouseover", onMouseOver);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerover", onOver);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      page.classList.remove("mu-cursor-on");
+      gsap.killTweensOf(dot);
+      gsap.set(dot, { clearProps: "all" });
     };
   }, []);
 
-  return (
-    <>
-      {/* Punto central del cursor */}
-      <div
-        ref={dotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-accent-sage rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-transform duration-75 ease-out md:block hidden"
-      />
-      {/* Anillo de precisión técnica */}
-      <div
-        ref={ringRef}
-        className="fixed top-0 left-0 w-8 h-8 border border-text-tertiary/40 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-[scale,border-color,background-color] duration-300 ease-out md:block hidden"
-      />
-    </>
-  );
+  return <span ref={dotRef} className="mu-cursor" aria-hidden="true" />;
 }

@@ -1,44 +1,44 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { Anton, Archivo } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
-import { CustomCursor } from "@/components/ui/CustomCursor";
 import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const archivo = Archivo({
+  variable: "--font-archivo",
+  weight: ["400", "500"],
   subsets: ["latin"],
+  display: "swap",
 });
+
+const title = "Freddy Palencia — Full Stack Developer";
 
 export const metadata: Metadata = {
-  title: "Freddy Palencia — Frontend Architect & Product Engineer",
+  title,
   description:
-    "Frontend Architect, Product Engineer y Fundador radicado en Santiago de Chile. Especializado en arquitectura escalable, performance extrema y diseño de experiencia premium.",
+    "Full Stack Developer en Santiago, Chile. Portafolio con DecideRider, una app publicada en Google Play y App Store para conductores de transporte y delivery, y mi recorrido desde 2016 con Next.js, NestJS, React Native y React.",
   keywords: [
     "Freddy Palencia",
-    "Frontend Architect",
-    "Product Engineer",
+    "Full Stack Developer",
     "DecideRider",
     "Santiago de Chile",
     "React",
     "Next.js",
-    "TailwindCSS",
-    "GSAP",
-    "Performance Web",
+    "NestJS",
+    "React Native",
   ],
   authors: [{ name: "Freddy Palencia" }],
-  icons: {
-    icon: "/logo.png",
-  },
   openGraph: {
-    title: "Freddy Palencia — Frontend Architect & Product Engineer",
+    title,
     description:
-      "Construyo productos digitales escalables con obsesión por la experiencia de usuario, performance y el detalle técnico.",
+      "Full Stack Developer en Santiago, Chile. DecideRider, una app para conductores de transporte y delivery publicada en Google Play y App Store.",
     type: "website",
   },
 };
@@ -54,22 +54,15 @@ export default function RootLayout({
     "name": "Freddy Daniel Palencia Padrón",
     "url": "https://freddypalencia.cl",
     "image": "https://freddypalencia.cl/backgroundfreddy.png",
-    "jobTitle": "Frontend Architect & Product Engineer",
+    "jobTitle": "Full Stack Developer",
     "sameAs": [
       "https://www.linkedin.com/in/freddy-daniel-palencia-padr%C3%B3n-6ab690111/"
-    ],
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Flexit"
-    }
+    ]
   };
 
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${jetbrainsMono.variable} scrollbar-hide`}
-    >
-      <body className="bg-bg-base text-text-primary antialiased selection:bg-accent-sage/30 selection:text-text-primary">
+    <html lang="es" className={`${anton.variable} ${archivo.variable}`}>
+      <body>
         {/* Google Analytics (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7J3DFS1TER"
@@ -90,21 +83,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* Cursor Técnico Inteligente */}
-        <CustomCursor />
-
-        {/* Capa de textura de Ruido Físico (sutil overlay de 1.5% opacidad) */}
-        <div className="noise-overlay" />
-        
-        {/* Retícula Blueprint técnica de Fondo */}
-        <div className="blueprint-grid" />
-
-        {/* Contenedor de Scroll Inercial */}
-        <SmoothScroll>
-          <div className="relative z-10 min-h-dvh flex flex-col justify-between">
-            {children}
-          </div>
-        </SmoothScroll>
+        {/* Scroll inercial (Lenis) */}
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
