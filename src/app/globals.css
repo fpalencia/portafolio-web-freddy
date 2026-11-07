@@ -402,6 +402,8 @@ html.lenis {
   }
   .mu-name {
     flex: none;
+    color: var(--fg);
+    background-image: none;
   }
   .mu-hero-photo {
     display: block;
