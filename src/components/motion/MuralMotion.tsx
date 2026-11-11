@@ -41,6 +41,86 @@ export function MuralMotion({ children }: { children: React.ReactNode }) {
         scrollTrigger: { trigger: ".mu-hero", start: "top top", end: "bottom top", scrub: true },
       });
 
+      // DecideRider demo: the phone stays sticky while the steps scroll past.
+      // The timeline is scrubbed by scroll, one unit per step: an offer rises
+      // like a bottom sheet, the decision card drops on it, the next offer
+      // slides in and gets its own card.
+      const steps = page.querySelector<HTMLElement>(".mu-steps");
+      if (steps) {
+        const layer = (key: string) => page.querySelector(`[data-layer="${key}"]`);
+        steps.setAttribute("data-motion", "");
+        stops.push(() => steps.removeAttribute("data-motion"));
+
+        // On narrow screens the phone sticks to the top, so the reading line
+        // moves down into the visible area below it.
+        const line = () => (window.matchMedia("(max-width: 760px)").matches ? "80%" : "center");
+        // The steps list has trailing space so the phone stays sticky; the
+        // story itself ends with the last step, not with that space.
+        const lastStep = steps.lastElementChild;
+
+        gsap
+          .timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: steps,
+              start: () => `top ${line()}`,
+              endTrigger: lastStep,
+              end: () => `bottom ${line()}`,
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          })
+          .from(layer("offer"), { yPercent: 100, duration: 0.5, ease: "power2.out" }, 0.75)
+          .from(layer("reject"), { yPercent: -130, scale: 0.92, duration: 0.4, ease: "back.out(1.6)" }, 1.85)
+          .from(layer("next"), { xPercent: 100, duration: 0.5, ease: "power2.inOut" }, 2.75)
+          .from(layer("accept"), { yPercent: -130, scale: 0.92, duration: 0.4, ease: "back.out(1.6)" }, 3.3)
+          .to({}, { duration: 0.3 }, 3.7);
+
+        // 3D entrance and exit: the phone arrives tilted in perspective and
+        // straightens out by the time the first step is read, then tilts
+        // away once the story is over.
+        const phone = page.querySelector(".mu-phone");
+        const tilted = { rotationY: -28, rotationX: 10, rotationZ: -4, scale: 0.88 };
+        gsap.fromTo(phone, tilted, {
+          rotationY: 0,
+          rotationX: 0,
+          rotationZ: 0,
+          scale: 1,
+          ease: "sine.inOut",
+          immediateRender: true,
+          // Ends when the phone becomes sticky, so the tilt stays visible
+          // while it travels up the screen.
+          scrollTrigger: { trigger: ".mu-demo", start: "top bottom", end: "top 15%", scrub: 0.8 },
+        });
+        gsap.to(phone, {
+          rotationY: 22,
+          rotationX: -6,
+          rotationZ: 3,
+          scale: 0.92,
+          ease: "power2.in",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: lastStep,
+            start: () => `bottom ${line()}`,
+            endTrigger: ".mu-demo",
+            end: "bottom top",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        gsap.utils.toArray<HTMLElement>(".mu-step", steps).forEach((step) => {
+          // The last step stays lit while the phone is still pinned on it.
+          ScrollTrigger.create({
+            trigger: step,
+            start: () => `top ${line()}`,
+            endTrigger: step === lastStep ? steps : step,
+            end: () => `bottom ${line()}`,
+            toggleClass: "is-active",
+          });
+        });
+      }
+
       gsap.utils.toArray<HTMLElement>(".mu-reveal").forEach((element) => {
         gsap.from(element, {
           y: 28,

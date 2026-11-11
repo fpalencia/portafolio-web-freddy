@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/Hero";
 import { WhatIDo } from "@/components/sections/WhatIDo";
 import { HowIThink } from "@/components/sections/HowIThink";
 import { WhereIWorked } from "@/components/sections/WhereIWorked";
+import { Stack } from "@/components/sections/Stack";
 import { Closing } from "@/components/sections/Closing";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
         <WhatIDo />
         <HowIThink />
         <WhereIWorked />
+        <Stack />
       </main>
       <Closing />
     </MuralMotion>

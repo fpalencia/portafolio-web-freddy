@@ -8,7 +8,7 @@ type Job = {
 
 const jobs: Job[] = [
   {
-    company: "Flexit",
+    company: "Flexit · Falabella",
     role: "Desarrollador Full Stack",
     text: "Desarrollé el software de control de asistencia de una plataforma de RR.HH., conforme a la normativa de la Dirección del Trabajo, con APIs en NestJS, acceso por roles y firma digital en la app móvil.",
     tech: "Next.js · NestJS · React Native · Google Cloud",

@@ -12,12 +12,20 @@ A mobile app, published on Google Play and the App Store, that helps ride-hailin
 * Recommends based on fare, distance and fuel cost.
 * Reads trip data with on-device text recognition.
 * Processes the information in real time.
+* Stack: React Native, Expo, Kotlin, Swift, Supabase, Node.js
 * Google Play: https://play.google.com/store/apps/details?id=com.deciderider.app
 * App Store: https://apps.apple.com/cl/app/deciderider/id6786428143
 
+## Stack
+
+- **Frontend**: React, Next.js, Vue 3, TypeScript, Tailwind CSS
+- **Mobile**: React Native, Expo, Electron, native Kotlin and Swift modules
+- **Backend**: NestJS, Node.js, PostgreSQL, Supabase
+- **Cloud and quality**: Google Cloud, Firebase, Docker, Jest
+
 ## Employment History
 
-- **Flexit** (2025 — 2026) | *Full Stack Developer*
+- **Flexit · Falabella** (2025 — 2026) | *Full Stack Developer*
   Built the attendance control software of an HR platform, compliant with Chilean Dirección del Trabajo rules, with NestJS APIs, role-based access and digital signature in the mobile app.
   *Stack*: Next.js, NestJS, React Native, Google Cloud
 
